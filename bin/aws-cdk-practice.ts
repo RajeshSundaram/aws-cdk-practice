@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "@aws-cdk/core";
-import { AwsCdkPracticeStack } from "../lib/aws-cdk-practice-stack";
-import { S3Stack } from "../lib/aws-s3-bucket-stack";
+import { Ec2Stack } from "../lib/explore-ec2-stack";
 
 const app = new cdk.App();
 const env = {
   region: app.node.tryGetContext("aws-my-region"),
+  account: app.node.tryGetContext("aws-my-account"),
 };
-new AwsCdkPracticeStack(app, "AwsCdkPracticeStack", { env });
-new S3Stack(app, "AwsS3Stack", { env });
+new Ec2Stack(app, "AwsEC2Practice", { env });

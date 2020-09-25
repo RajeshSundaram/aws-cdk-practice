@@ -4,6 +4,7 @@
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true",
-    "aws-my-region": "ap-northeast-1"
+    "aws-my-region": "ap-northeast-1",
+    "aws-my-account": "565710013274"
   }
 }
