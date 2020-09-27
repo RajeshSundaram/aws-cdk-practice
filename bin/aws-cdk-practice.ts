@@ -6,6 +6,6 @@ import { Ec2Stack } from "../lib/explore-ec2-stack";
 const app = new cdk.App();
 const env = {
   region: app.node.tryGetContext("aws-my-region"),
-  account: app.node.tryGetContext("aws-my-account"),
+  account: process.env.CDK_DEFAULT_ACCOUNT,
 };
 new Ec2Stack(app, "AwsEC2Practice", { env });

@@ -12,10 +12,14 @@ export class Ec2Stack extends cdk.Stack {
       edition: ec2.AmazonLinuxEdition.STANDARD,
       storage: ec2.AmazonLinuxStorage.GENERAL_PURPOSE,
     });
-    const vpc = ec2.Vpc.fromLookup(this, "vpc-45293c22", {
-      isDefault: true,
-      vpcId: "vpc-45293c22",
-    });
+    const vpc = ec2.Vpc.fromLookup(
+      this,
+      this.node.tryGetContext("defaultVpcId"),
+      {
+        isDefault: true,
+        vpcId: this.node.tryGetContext("defaultVpcId"),
+      }
+    );
     const sshSecurityGroup = new ec2.SecurityGroup(this, "ssh-ec2-sg", {
       vpc,
       securityGroupName: "ec2-ssh-sg",
@@ -40,7 +44,7 @@ export class Ec2Stack extends cdk.Stack {
       instanceType,
       machineImage,
       securityGroup: sshSecurityGroup,
-      keyName: "aws-practice-june-2020",
+      keyName: this.node.tryGetContext("instanceKeyPairName"),
       userData: userData,
     });
     MyIns.addSecurityGroup(webAccessSg);
@@ -51,17 +55,5 @@ export class Ec2Stack extends cdk.Stack {
       "systemctl enable httpd.service",
       'echo "Hello Rajesh! from $(hostname -f)" > /var/www/html/index.html'
     );
-
-    // const apacheInstallScriptAsset = new Asset(this, "ec2-metadata-bucket", {
-    //   path: path.join(__dirname, "ec2-metadata.sh"),
-    // });
-    // const metaZipFile = MyIns.userData.addS3DownloadCommand({
-    //   bucket: apacheInstallScriptAsset.bucket,
-    //   bucketKey: apacheInstallScriptAsset.s3ObjectKey,
-    // });
-    // MyIns.userData.addCommands(
-    //   `unzip ${metaZipFile} -d ~`,
-    //   `./ec2-metadata.sh`
-    // );
   }
 }
